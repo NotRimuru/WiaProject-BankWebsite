@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Bank</title>
+    <style>
+        body {
+            margin: 0px;
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .no-select {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        #header {
+            overflow: hidden;
+            margin-top: 0px;
+            padding: 10px;
+            padding-left: 20%;
+            height: 40px;
+            letter-spacing: 2px;
+            color: #FFF;
+            line-height: 37px;
+            font-size: 30px;
+            font-weight: bold;
+            background: linear-gradient(0deg, rgba(2,148,177,0.9) 0%, rgba(0, 171, 206, 0.9) 100%);
+            text-align: left;
+        }
+
+        bankName{
+            font-weight: normal;
+            font-family: Verdana;
+            letter-spacing: 1px;
+        }
+
+        #ribbon{
+            overflow: hidden;
+            display: flex;
+            flex-wrap: wrap-reverse;
+            background-color: rgb(0, 190, 228);
+            height: 60px;
+            padding-left: 20%;
+        }
+
+        #home{
+            align-content: center;
+            background-color: #f1f1f1;
+            height: 45px;
+            width: 150px;
+            color: rgb(0, 190, 228);
+            font-size: 19px;
+        }
+        
+        #history{
+            align-content: center;
+            background-color: inherit;
+            height: 45px;
+            width: 150px;
+            color: white;
+            font-size: 19px;
+        }
+
+        #main {
+            height: fit-content;
+            width: 40%;
+            background-color: #fff;
+            padding: 20px;
+            padding-bottom: 0px;
+            margin-top: 40px;
+            margin-left: 20%;
+            justify-content: center;
+        }
+
+        .title{
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+
+        .wrapper{
+            overflow: hidden;
+            display: flex;
+            height: 70px;
+            width: 100%;
+        }
+
+        
+        .balance{
+            font-variant-numeric: tabular-nums;
+            margin: auto;
+            margin-right: 0px;
+        }
+        .pln{
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+        .arrow{
+            margin:auto;
+            margin-left: 10px;
+            margin-bottom: 17px;
+            color: rgb(0, 190, 228);
+            font-weight: 100;
+        }
+
+        #nowy-przelew{
+            height: 80%;
+            width: 30%;
+            background-color: rgb(0, 190, 228);
+            border-radius: 7px;
+            color: white;
+            align-content: center;
+            font-size: 20px;
+        }
+
+        #historia-przelewów{
+            height: 80%;
+            width: 30%;
+            background-color: whitesmoke;
+            border-radius: 7px;
+            color: rgb(0, 190, 228);
+            align-content: center;
+            font-size: 20px;
+            margin-left: 20px;
+        }
+
+        #content{
+            height: 50%;
+            width: calc(40% + 40px);
+            margin-left: 20%;
+        }
+
+        #label{
+            display: flex;
+            height: 40px;
+            width: calc(100% - 40px);
+            padding: auto;
+            background-color: white;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            padding-right: 20px;
+            color: gray;
+        }
+
+        #listaTransakcji{
+            height: 300px;
+            justify-content: center;
+            width: 100%;
+            overflow-y: scroll;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .transakcja{
+            display: flex;
+            margin-bottom: 5px;
+            height: 50px;
+            width: calc(100% - 40px);
+            padding-left: 20px;
+            padding-right: 20px;
+            background-color: white;
+        }
+
+        .data{
+            height: 100%;
+            width: 20%;
+            align-content: center;
+            text-align: left;
+        }
+
+        .nazwa{
+            height: 100%;
+            width: 30%;
+            align-content: center;
+            text-align: left;
+        }
+
+        .kategoria{
+            height: 100%;
+            width: 30%;
+            align-content: center;
+            text-align: left;
+        }
+
+        .kwota{
+            height: 100%;
+            width: 20%;
+            text-align: right;
+            align-content: center;
+        }
+
+        .transakcja > .data, .transakcja > .kwota{
+            font-weight: bold;
+        }
+
+        .transakcja > .nazwa{
+            color: rgb(73, 73, 73);
+        }
+    </style>
+</head>
+<body oncontextmenu="return false" class = "no-select">
+    <div id="header">∞│<bankName>Infinite Bank</bankName></div>
+    <div id = "ribbon">
+        <div id = "home">HOME</div>
+        <div id = "history">HISTORY</div>
+    </div>
+
+    
+    <div id="main">
+        <div class = "wrapper">
+            <h1 class = "title">KONTO BANKOWE</h1><h1 class="arrow">➜</h1>
+            <h1 id = "saldo" class="balance"></h1><h1 class="pln">&nbsp;PLN</h1>
+        </div>
+        <div class = "wrapper">
+            <div id = "nowy-przelew">Nowy Przelew</div>
+            <div id = "historia-przelewów">Historia</div>
+        </div>
+    </div>
+    <div id =  "content">
+        <div id = "label">
+            <div class = "data">Data</div>
+            <div class = "nazwa">Nazwa</div>
+            <div class = "kategoria">Kategoria</div>
+            <div class = "kwota">Kwota</div>
+        </div>
+        <div id = "listaTransakcji"></div>
+    </div>
+
+
+    <script>
+        const kategorie = [
+            'Rozrywka',
+            'Wydatki osobiste',
+            'Transport',
+            'Odzież',
+            'Obuwie',
+            'Urzadzenia ekeltryczne',
+            'Pielegnacja osobista',
+            'Przelew Przychodzacy',
+        ];
+
+        const nazwyDni = [
+            'Niedziela',
+            'Ponidziałek',
+            'Wtorek',
+            'Środa',
+            'Czwartek',
+            'Piątek',
+            'Sobota',
+        ];
+
+        const outGoingNames = [
+            ['Steam', kategorie[0]],
+            ['Lidl', kategorie[1]],
+            ['Biedronka', kategorie[1]],
+            ['Rossmann', kategorie[6]],
+            ['Orlen', kategorie[2]],
+            ['BP', kategorie[2]],
+            ['Shell', kategorie[2]],
+            ['Reserved', kategorie[3]],
+            ['H&M', kategorie[3]],
+            ['CCC', kategorie[4]],
+            ['MediaMarkt', kategorie[5]],
+            ['RTV Euro AGD', kategorie[5]],
+            ['Hebe', kategorie[6]],
+            ['Kaufland', kategorie[1]],
+            ['Carrefour', kategorie[1]],
+            ['Epic Games Store', kategorie[0]],
+            ['Ubisoft Connect', kategorie[0]],
+            ['BattleNet', kategorie[0]],
+        ];
+
+        const incomingNames = [
+            ['Babcia', kategorie[7]],
+            ['Mama', kategorie[7]],
+            ['Tata', kategorie[7]],
+            ['Szef', kategorie[7]],
+        ];
+
+        let saldo = 5000;
+        let transakcje = new Array(); 
+        let sortowanie = ['data', 'malejaco', 0];
+
+        function wygenerujTransakcje() {
+            for (let i = 0; i < 100; i++) {
+                let kwota;
+                do{
+                    kwota = (Math.random() * 1001) - 500;
+                }while(kwota == 0);
+                
+                let nazwa, kategoria;
+                if(kwota > 0){
+                    const losowyNum = Math.floor(Math.random() * (incomingNames.length - 1));
+                    nazwa = incomingNames[losowyNum][0];
+                    kategoria = incomingNames[losowyNum][1];
+                }
+                else{
+                    const losowyNum = Math.floor(Math.random() * (outGoingNames.length - 1));
+                    nazwa = outGoingNames[losowyNum][0];
+                    kategoria = outGoingNames[losowyNum][1];
+                }
+                const data = losowaDataWZasiegu(360);
+
+                transakcje.push([kwota, nazwa, kategoria, data]);
+                saldo += kwota;
+            }
+            aktualizujWidok();
+        }
+
+        function aktualizujWidok() {
+            document.getElementById("saldo").textContent = saldo.toFixed(2);
+            sortowanieTransakcji(transakcje, sortowanie);
+            wyswietlTransakcje(transakcje);
+        }
+
+        function wyswietlTransakcje(lista) {
+            console.log('starting to show new transactions');
+            let iloscPetli = lista.length;
+            if(lista.length > 10){
+                iloscPetli = 10;
+            }
+            for(let i = 0; i < iloscPetli; i++){
+                const kwota = lista[i][0];
+                const nazwa = lista[i][1];
+                const kategoria = lista[i][2];
+                const data = lista[i][3];
+                const dzisiejszaData = new Date;
+                const miesiac = data.getMonth() + 1
+                let dateStr;
+                console.log(dzisiejszaData.getDate())
+                if(dzisiejszaData.getFullYear() - data.getFullYear() > 0){
+                    dateStr = `${data.getDate()}.${miesiac}.${data.getFullYear()}.`;  
+                }
+                else if(dzisiejszaData.getMonth()+1 - miesiac > 0){
+                    dateStr = `${data.getDate()}.${miesiac}.`;
+                }
+                else{
+                    if(dzisiejszaData.getDay() - data.getDay() < 7){
+                        if(dzisiejszaData.getDate() - data.getDate() == 0){
+                            dateStr = 'Dzisiaj';
+                        }
+                        else if(dzisiejszaData.getDate() - data.getDate() == 1){
+                            dateStr = 'Wczoraj';
+                        }
+                        else{
+                            dateStr = nazwyDni[data.getDay()];    
+                        }
+                    }
+                    else{
+                        dateStr = `${data.getDate()}.${miesiac}.`;
+                    }
+                }
+                
+
+                document.getElementById("listaTransakcji").innerHTML +=`
+                <div class = "transakcja">
+                    <div class = "data">${dateStr}</div>
+                    <div class = "nazwa">${nazwa}</div>
+                    <div class = "kategoria">${kategoria}</div>
+                    <div class = "kwota">${kwota.toFixed(2)} PLN</div>
+                </div>`
+
+                let kwotaDiv = document.getElementsByClassName("kwota")[i+1];
+                if(kwota >= 0){
+                    kwotaDiv.style.color = "rgb(36, 255, 91)";
+                }
+                else{
+                    kwotaDiv.style.color = "black";
+                }
+            }
+        }
+
+        function losowaDataWZasiegu(liczbaDni) {
+            const data = new Date;
+            return new Date(data.getTime() - Math.floor(Math.random()*liczbaDni*24*60*60*1000));
+        }
+
+        function sortowanieTransakcji(lista, params){
+            let condition;
+            if(params[0] == 'kwota'){
+                condition = 0;
+            }
+            else if(params[0] == 'nazwa'){
+                condition = 1;
+            }
+            else if(params[0] == 'kategoria'){
+                condition = 2;
+            }
+            else if(params[0] == 'data'){
+                condition = 3;
+                amtOfLoops = 3;
+            }
+
+            for(let j = 0; j < lista.length; j ++){
+                for(let k = 0; k < lista.length - 1; k++){
+                    let check;
+                    let num1 = lista[k][condition];
+                    let num2 = lista[k + 1][condition];
+                    if(condition == 3){
+                        const dzien = new Date();
+                        if(params[2] == 0){
+                            check = (num1.getDate() - dzien.getDate()) < (num2.getDate() - dzien.getDate());
+                        } 
+                        else if(params[2] == 1){
+                            check = (num1.getMonth() - dzien.getMonth()) < (num2.getMonth() - dzien.getMonth());
+                        }
+                        else if(params[2] == 2){
+                            check = (num1.getFullYear() - dzien.getFullYear()) < (num2.getFullYear() - dzien.getFullYear());
+                        }
+                    }
+                    else{
+                        check = num1 > num2;
+                    }
+                    if((params[1] == 'rosnaco' && check == true) || (params[1] == 'malejaco' && check == false)) continue;
+                    
+                    const temp = lista[k];
+                    lista[k] = lista[k+1];
+                    lista[k+1] = temp;
+                }
+            }   
+            params[2] ++;
+            params[2] %= 3;
+            if(params[2] != 0){
+                sortowanieTransakcji(lista, params);
+            }
+            else{
+                console.log('stoping sort');
+            }
+        }
+
+        function dragToScrollDiv(divId){
+                const div = document.getElementById(divId);
+                let isDown = false,
+                    startY,
+                    scrollTop;
+
+                div.addEventListener('mousedown', (event) => {
+                    if(isDown) return;
+
+                    div.classList.add('active');
+                    startY = event.pageY - div.offsetTop;
+                    scrollTop = div.scrollTop;
+
+                    isDown = true;
+                });
+
+                document.body.addEventListener('mouseup', () => {
+                    if(!isDown) return;
+
+                    isDown = false;
+                    div.classList.remove('active');
+                });
+
+                document.body.addEventListener('mouseleave', () => {
+                    if(!isDown) return;
+
+                    isDown = false;
+                    div.classList.remove('active');
+                });
+
+                document.body.addEventListener('mousemove', (event) => {
+                    if(!isDown) return;
+
+                    const y = event.pageY - div.offsetTop;
+                    const diff = (y - startY);
+
+                    div.scrollTop = scrollTop - diff;
+                });
+            }
+
+        dragToScrollDiv('listaTransakcji')
+        wygenerujTransakcje();
+        document.write("<p>Infinite Bank - Zarządzaj swoimi transakcjami!</p>");
+    </script>
+    <center> 
+        <hr color="black" width="90%" height="7px">
+        <p>Wykonali: Filip Szpinek, Damian Pieczurczyk, Aleksander Rakoczy</p>
+    </center>
+</body>
+</html>
